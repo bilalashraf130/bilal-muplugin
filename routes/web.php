@@ -13,6 +13,12 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+
+//
+//
+//$router->get('/base_test', [function () use ($router) {
+//
+//
+//
+//    return view("base_test");
+//}]);

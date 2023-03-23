@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
+
 class ExampleJob extends Job
 {
     /**
@@ -11,7 +13,7 @@ class ExampleJob extends Job
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -21,6 +23,7 @@ class ExampleJob extends Job
      */
     public function handle()
     {
-        //
+       User::get();
+       //Delete users
     }
 }

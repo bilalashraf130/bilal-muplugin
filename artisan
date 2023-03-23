@@ -1,5 +1,22 @@
 #!/usr/bin/env php
 <?php
+//WE'll load wordpress as well
+
+/**
+ * Tells WordPress to load the WordPress theme and output it.
+ *
+ * @var bool
+ */
+define( 'WP_USE_THEMES', true );
+
+//Only initiale the basic short wordpress
+define('SHORTINIT',true);
+define( 'WP_CLI', false );
+/** Loads the WordPress Environment and Template */
+require '../../..//wp-config.php';
+
+
+
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
