@@ -4,7 +4,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Application Admin-ajax.php Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register all of the routes for an application.
@@ -12,8 +12,3 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-
-//
-//
-

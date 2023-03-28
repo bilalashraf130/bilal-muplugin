@@ -23,9 +23,6 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
- $app->withFacades();
-
- $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -60,13 +57,7 @@ $app->singleton(
 |
 */
 
-$app->configure('app');
-$app->configure('queue');
-$app->configure('database');
-$app->configure('filesystem');
-$app->configure('auth');
-$app->configure('hooks');
-$app->configure('view');
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -82,8 +73,7 @@ $app->configure('view');
  ]);
 
  $app->routeMiddleware([
-     'auth' => Laravel\Lumen\Middlewares\Authenticate::class,
-     'throttle' => Laravel\Lumen\Middlewares\ThrottleRequest::class,
+
  ]);
 
 /*
@@ -98,11 +88,6 @@ $app->configure('view');
 */
 
 
- $app->register(App\Providers\AppServiceProvider::class);
- $app->register(App\Providers\AuthServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
-$app->register(App\Providers\HookServiceProvider::class);
-$app->register(Illuminate\View\ViewServiceProvider::class);
 
 
 
@@ -117,10 +102,5 @@ $app->register(Illuminate\View\ViewServiceProvider::class);
 |
 */
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__.'/../routes/web.php';
-});
 
 return $app;
