@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6160e41adcb9f766d7d185e334127591",
+    "content-hash": "0d8773b0f9fe494a831eb7a12a18479e",
     "packages": [
         {
             "name": "brick/math",
@@ -5807,12 +5807,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:wpwhales/lumen-framework.git",
-                "reference": "790493932e597150402445880b16b6631eff1491"
+                "reference": "4ce5c82a59bd714ecf72047b555131de32ab70c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpwhales/lumen-framework/zipball/790493932e597150402445880b16b6631eff1491",
-                "reference": "790493932e597150402445880b16b6631eff1491",
+                "url": "https://api.github.com/repos/wpwhales/lumen-framework/zipball/4ce5c82a59bd714ecf72047b555131de32ab70c0",
+                "reference": "4ce5c82a59bd714ecf72047b555131de32ab70c0",
                 "shasum": ""
             },
             "require": {
@@ -5857,6 +5857,8 @@
                 "vlucas/phpdotenv": "^5.4.1"
             },
             "require-dev": {
+                "fakerphp/faker": "^1.9.1",
+                "laravel/dusk": "^7.7",
                 "mockery/mockery": "^1.4.4",
                 "phpunit/phpunit": "^9.5.8"
             },
@@ -5900,7 +5902,7 @@
                 "issues": "https://github.com/laravel/lumen-framework/issues",
                 "source": "https://github.com/laravel/lumen-framework"
             },
-            "time": "2023-03-31T01:21:09+00:00"
+            "time": "2023-03-31T05:00:20+00:00"
         }
     ],
     "packages-dev": [
@@ -7977,5 +7979,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

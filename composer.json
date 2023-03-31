@@ -21,10 +21,10 @@
         "wpwhales/lumen-framework": "dev-main"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/dusk": "^7.7",
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.8",
+        "laravel/dusk": "^7.7",
+        "fakerphp/faker": "^1.9.1"
     },
     "autoload": {
         "psr-4": {
