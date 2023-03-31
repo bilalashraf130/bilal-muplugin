@@ -17,14 +17,14 @@
         }
     ],
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "wpwhales/lumen-framework": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel/dusk": "^7.7",
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.10",
-        "wpwhales/lumen-framework": "dev-main"
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
@@ -41,6 +41,10 @@
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-update-cmd": [
+            "php vendor/wpwhales/lumen-framework/create-env.php",
+            "php artisan key:generate"
         ]
     },
     "config": {
