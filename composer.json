@@ -42,9 +42,11 @@
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
+        "post-install-cmd": [
+            "if [  -d vendor ]; then php vendor/wpwhales/lumen-framework/create-env.php; fi; if [ ! -f .env ]; then php artisan key:generate; fi"
+        ],
         "post-update-cmd": [
-            "php vendor/wpwhales/lumen-framework/create-env.php",
-            "php artisan key:generate"
+            "if [  -d vendor ]; then php vendor/wpwhales/lumen-framework/create-env.php; fi; if [ ! -f .env ]; then php artisan key:generate; fi"
         ]
     },
     "config": {
