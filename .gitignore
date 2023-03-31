@@ -1,6 +1,10 @@
 /vendor
 /.idea
+/dist/
+.budfiles/
 Homestead.json
 Homestead.yaml
+/node_modules
 .env
 .phpunit.result.cache
+yarn-error.log

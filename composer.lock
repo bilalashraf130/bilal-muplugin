@@ -5807,12 +5807,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:wpwhales/lumen-framework.git",
-                "reference": "4ce5c82a59bd714ecf72047b555131de32ab70c0"
+                "reference": "da77c671107ae5dc9583c370f6a354a050202434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpwhales/lumen-framework/zipball/4ce5c82a59bd714ecf72047b555131de32ab70c0",
-                "reference": "4ce5c82a59bd714ecf72047b555131de32ab70c0",
+                "url": "https://api.github.com/repos/wpwhales/lumen-framework/zipball/da77c671107ae5dc9583c370f6a354a050202434",
+                "reference": "da77c671107ae5dc9583c370f6a354a050202434",
                 "shasum": ""
             },
             "require": {
@@ -5857,8 +5857,6 @@
                 "vlucas/phpdotenv": "^5.4.1"
             },
             "require-dev": {
-                "fakerphp/faker": "^1.9.1",
-                "laravel/dusk": "^7.7",
                 "mockery/mockery": "^1.4.4",
                 "phpunit/phpunit": "^9.5.8"
             },
@@ -5902,7 +5900,7 @@
                 "issues": "https://github.com/laravel/lumen-framework/issues",
                 "source": "https://github.com/laravel/lumen-framework"
             },
-            "time": "2023-03-31T05:00:20+00:00"
+            "time": "2023-03-31T05:02:11+00:00"
         }
     ],
     "packages-dev": [
@@ -7979,5 +7977,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

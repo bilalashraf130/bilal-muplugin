@@ -1,0 +1,8 @@
+{
+  "browserslist": [
+    "extends @roots/browserslist-config/current"
+  ],
+  "devDependencies": {
+    "@roots/bud": "^6.11.0"
+  }
+}
