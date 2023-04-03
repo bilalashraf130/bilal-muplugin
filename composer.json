@@ -13,18 +13,27 @@
                     "github.com": "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"
                 }
             }
-
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/wpwhales/lumen-subscriptions",
+            "options": {
+                "github-oauth": {
+                    "github.com": "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"
+                }
+            }
         }
     ],
     "require": {
         "php": "^8.0",
-        "wpwhales/lumen-framework": "dev-main"
+        "wpwhales/lumen-framework": "dev-main",
+        "wpwhales/lumen-subscriptions": "dev-main"
     },
     "require-dev": {
-        "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.8",
+        "fakerphp/faker": "^1.9.1",
         "laravel/dusk": "^7.7",
-        "fakerphp/faker": "^1.9.1"
+        "mockery/mockery": "^1.4.4",
+        "phpunit/phpunit": "^9.5.8"
     },
     "autoload": {
         "psr-4": {

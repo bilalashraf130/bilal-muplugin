@@ -88,6 +88,10 @@ $app->singleton(
 */
 
 
+$app->register(\App\Providers\AssetsServiceProvider::class);
+$app->register(\Rinvex\Support\Providers\SupportServiceProvider::class);
+$app->register(\WPWhales\Subscriptions\Providers\SubscriptionsServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------

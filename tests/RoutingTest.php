@@ -2,89 +2,53 @@
 
 namespace Tests;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Http;
-use Laravel\Lumen\Routing\Router;
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class RoutingTest extends TestCase
 {
 
-    private function testSomething(){
 
-        require ABSPATH . WPINC . '/pluggable.php';
-
-
-    }
-
-    public function testGetRoutes(){
-
-        $this->testSomething();
-
-        $routes = $this->app->make("router")->getRoutes();
-        foreach ($routes as $route) {
-           $method = $route["method"];
-           $uri = $route["uri"];
-           $action = $route["action"];
-           if($method==="GET"){
-
-               if(isset($action["wordpress"])){
-                   $this->testWordpressRoute($uri);
-               }else{
-                   $this->testLumenRoutes($uri);
-               }
-
-           }
-
-            // Add additional checks here, such as checking the response content.
-        }
-    }
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    private function testWordpressRoute($url)
+    public function test_new_user_enroll_course_forgot_password_test_confirm_course_landing_page()
     {
-        $response = Http::get('https://athletes-ocean.lndo.site/'.$url);
-        $this->assertEquals(200,$response->status(),"Route Status Testing for ".$url);
 
 
 
-        $dom = new \DOMDocument();
+        $response = $this->post("/wp-admin/admin-ajax.php?action=enroll_in_course");
+        //Send empty data to check validation
+        $this->response->assertJson([
+            "first_name" => [
+                "The first name field is required."
+            ],
+            "last_name" => [
+                "The last name field is required."
+            ],
+            "email" => [
+                "The email field is required."
+            ],
+            "course_ids" => [
+                "The course ids field is required."
+            ],
+        ]);
+        //Now let's send actual random data
+        $faker = \Faker\Factory::create();
+        $response = $this->post("/wp-admin/admin-ajax.php?action=enroll_in_course",[
+            "first_name"=>$faker->firstName,
+            "last_name"=>$faker->lastName,
+            "email"=>$faker->email,
+            "course_ids"=>[
+                "6381"
+            ]
+        ]);
 
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($response);
-        libxml_use_internal_errors(false);
-            //CHECKING THE LANDING PAGE
+        $this->response->assertJsonFragment([
+           "success"=>true,
+           "message"=>"Enrolled in courses"
+        ]);
 
-        $element = $dom->getElementById('mastheads');
-
-        $this->assertIsObject($element);
-
-    }
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    private function testLumenRoutes($url)
-    {
-        $this->get($url)->assertResponseStatus(200);
-
-
-    }
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    private function testNotFoundRoutes()
-    {
-        $this->get("/somerandomroute")->assertResponseStatus(404);
-
+        $redirect_url = $this->httpResponse->json("redirect_url");
+        //NOW REDIRECT TO THAT
+         $this->get($redirect_url);
+        dd($redirect_url,$this->httpResponse->body());
 
     }
 

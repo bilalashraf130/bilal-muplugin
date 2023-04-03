@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Brianclogan\DuskRecordings\WithDuskRecordings;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -11,6 +12,7 @@ use Laravel\Lumen\Testing\DuskBaseTestCase;
 abstract class DuskTestCase extends DuskBaseTestCase
 {
 
+    use WithDuskRecordings;
 
     /**
      * Prepare for Dusk test execution.
@@ -29,6 +31,29 @@ abstract class DuskTestCase extends DuskBaseTestCase
      */
     protected function driver(): RemoteWebDriver
     {
+
+        $options = (new ChromeOptions)
+            ->setExperimentalOption("prefs", [
+                "download.default_directory" => $this->downloadDir
+            ])
+            ->addArguments(collect([
+                '--window-size=1920,1080',
+            ])->unless($this->hasHeadlessDisabled(), function ($items) {
+                return $items->merge([
+                    '--disable-gpu',
+                    '--headless',
+                    '--disable-dev-shm-usage'
+                ]);
+            })->merge(
+                $this->getChromeArgs()
+            )->all());
+
+        return RemoteWebDriver::create(
+            $_ENV['DUSK_DRIVER_URL'] ?? 'http://chromedriver:4444/wd/hub',
+            DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY, $options
+            )
+        );
         $options = (new ChromeOptions)->addArguments(collect([
             $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
         ])->unless($this->hasHeadlessDisabled(), function (Collection $items) {
