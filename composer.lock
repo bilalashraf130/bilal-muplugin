@@ -6553,12 +6553,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:wpwhales/lumen-subscriptions.git",
-                "reference": "3d7ec2927fe461395ccbc20366d03ad0c38d9c52"
+                "reference": "970aa19cc5be881af59a4a141e6542a48bc68119"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpwhales/lumen-subscriptions/zipball/3d7ec2927fe461395ccbc20366d03ad0c38d9c52",
-                "reference": "3d7ec2927fe461395ccbc20366d03ad0c38d9c52",
+                "url": "https://api.github.com/repos/wpwhales/lumen-subscriptions/zipball/970aa19cc5be881af59a4a141e6542a48bc68119",
+                "reference": "970aa19cc5be881af59a4a141e6542a48bc68119",
                 "shasum": ""
             },
             "require": {
@@ -6637,7 +6637,7 @@
                 "source": "https://github.com/afzidan/laravel-subscriptions",
                 "docs": "https://github.com/afzidan/laravel-subscriptions/blob/master/README.md"
             },
-            "time": "2023-04-02T17:04:46+00:00"
+            "time": "2023-04-03T11:53:42+00:00"
         }
     ],
     "packages-dev": [

@@ -8,6 +8,7 @@ use Rinvex\Subscriptions\Providers\SubscriptionsServiceProvider;
 use Rinvex\Subscriptions\Traits\HasPlanSubscriptions;
 use Rinvex\Subscriptions\Models\PlanSubscription;
 use App\Models\User;
+use WPWhales\Subscriptions\Models\Feature;
 class Woocommerce
 {
 
@@ -28,8 +29,11 @@ class Woocommerce
         add_action("woocommerce_product_data_panels", [$this,"demo_product_tab_product_tab_content"], 12);
         add_action("admin_footer", [$this,"my_subscription_custom_js"], 12);
         add_action("woocommerce_process_product_meta", [$this,"save_my_subscription_product_settings"], 12);
-        add_action("woocommerce_Product_subscription_add_to_cart", [$this,"add_to_cart_button"], 12);
+        add_action("woocommerce_product_subscription_add_to_cart", [$this,"add_to_cart_button"], 30);
         add_action("woocommerce_order_status_completed", [$this,"assign_membership_to_user"],PHP_INT_MAX);
+        add_action("admin_enqueue_scripts",[$this,"membership_js_file"] , PHP_INT_MAX, 1);
+        add_action("woocommerce_after_shop_loop_item",[$this,"my_custom_product_type_loop_add_to_cart"] , 30);
+        add_action("woocommerce_after_shop_loop_item_title",[$this,"remove_read_more_button"] , 1);
 
         /**
 
@@ -42,65 +46,72 @@ class Woocommerce
          */
         add_action("woocommerce_after_calculate_totals",[$this,"bsi_cart_total_after"] , PHP_INT_MAX, 1);
 
-    }
 
+    }
+    public function membership_js_file() {
+        $path = wp_upload_dir();
+
+        if ( file_exists( $path['basedir'] . '/wpwhales/assets/misc/membership.js' ) ) {
+            wp_enqueue_script( 'my-script', $path['baseurl'] . '/wpwhales/assets/misc/membership.js', array( 'jquery' ) );
+        }
+    }
     /**
 
     Assign membership to user
      */
-    public function assign_membership_to_user($order_id )
-    {
-//        $User_object = User::find(get_current_user_id());
-        $order = wc_get_order($order_id);
-        $items = $order->get_items();
-        $user_id = get_current_user_id();
-        foreach ($items as $item) {
-            $product_id = $item->get_product_id();
-        }
-        $membership_type = get_post_meta($product_id, 'membership_type', true);
-
-        if ($membership_type == 'full_time') {
-
-            $plan = app('rinvex.subscriptions.plan')->find(68);
-            $subscription = new PlanSubscription();
-            $subscription->subscriber_id = $user_id;
-            $subscription->subscriber_type = 'App\Models\User';
-            $subscription->slug = $plan->slug;
-            $subscription->plan_id = $plan->id;
-            $subscription->name = $plan->name;
-            $subscription->starts_at = Carbon::now();
-            $subscription->ends_at = Carbon::now()->addYear();
-            $subscription->save();
-        } else if($membership_type == 'life_time'){
-
-            $plan = app('rinvex.subscriptions.plan')->find(69);
-            $subscription = new PlanSubscription();
-            $subscription->subscriber_id = get_class($User_object);
-            $subscription->subscriber_type = 'App\Models\User';
-            $subscription->slug = $plan->slug;
-            $subscription->plan_id = $plan->id;
-            $subscription->name = $plan->name;
-            $subscription->starts_at = Carbon::now();
-            $subscription->ends_at = Carbon::now()->addYear();
-            $subscription->save();
-
-        } else {
-            $find = PlanSubscription::where('subscriber_id', $user_id)->count();
-            if ($find == 0) {
-                $plan = app('rinvex.subscriptions.plan')->find(43);
-                $subscription = new PlanSubscription();
-                $subscription->subscriber_id = $user_id;
-                $subscription->subscriber_type = 'App\Models\User';
-                $subscription->slug = $plan->slug;
-                $subscription->plan_id = $plan->id;
-                $subscription->name = $plan->name;
-                $subscription->starts_at = Carbon::now();
-                $subscription->ends_at = Carbon::now()->addYear();
-                $subscription->save();
-            }
-        }
-
-    }
+//    public function assign_membership_to_user($order_id )
+//    {
+////        $User_object = User::find(get_current_user_id());
+//        $order = wc_get_order($order_id);
+//        $items = $order->get_items();
+//        $user_id = get_current_user_id();
+//        foreach ($items as $item) {
+//            $product_id = $item->get_product_id();
+//        }
+//        $membership_type = get_post_meta($product_id, 'membership_type', true);
+//
+//        if ($membership_type == 'full_time') {
+//
+//            $plan = app('rinvex.subscriptions.plan')->find(68);
+//            $subscription = new PlanSubscription();
+//            $subscription->subscriber_id = $user_id;
+//            $subscription->subscriber_type = 'App\Models\User';
+//            $subscription->slug = $plan->slug;
+//            $subscription->plan_id = $plan->id;
+//            $subscription->name = $plan->name;
+//            $subscription->starts_at = Carbon::now();
+//            $subscription->ends_at = Carbon::now()->addYear();
+//            $subscription->save();
+//        } else if($membership_type == 'life_time'){
+//
+//            $plan = app('rinvex.subscriptions.plan')->find(69);
+//            $subscription = new PlanSubscription();
+//            $subscription->subscriber_id = get_class($User_object);
+//            $subscription->subscriber_type = 'App\Models\User';
+//            $subscription->slug = $plan->slug;
+//            $subscription->plan_id = $plan->id;
+//            $subscription->name = $plan->name;
+//            $subscription->starts_at = Carbon::now();
+//            $subscription->ends_at = Carbon::now()->addYear();
+//            $subscription->save();
+//
+//        } else {
+//            $find = PlanSubscription::where('subscriber_id', $user_id)->count();
+//            if ($find == 0) {
+//                $plan = app('rinvex.subscriptions.plan')->find(43);
+//                $subscription = new PlanSubscription();
+//                $subscription->subscriber_id = $user_id;
+//                $subscription->subscriber_type = 'App\Models\User';
+//                $subscription->slug = $plan->slug;
+//                $subscription->plan_id = $plan->id;
+//                $subscription->name = $plan->name;
+//                $subscription->starts_at = Carbon::now();
+//                $subscription->ends_at = Carbon::now()->addYear();
+//                $subscription->save();
+//            }
+//        }
+//
+//    }
     /**
 
     Adds custom product Type product subscription
@@ -117,6 +128,7 @@ class Woocommerce
     }
     public function add_product_type( $types ){
         $types[ 'Product_subscription' ] = __( 'Product subscription', 'ps_product' );
+
         return $types;
     }
     public function demo_product_tab( $tabs ){
@@ -128,6 +140,7 @@ class Woocommerce
         return $tabs;
     }
     public function demo_product_tab_product_tab_content(){
+
         ?><div id='demo_product_options' class='panel woocommerce_options_panel'><?php
         ?><div class='options_group'><?php
         woocommerce_wp_select(
@@ -139,11 +152,96 @@ class Woocommerce
                 'description' => __( 'Select Membership.', 'membership_product' ),
                 'options' => array(
 
-                    'full_time' => __( 'Full Time', 'membership_product' ),
-                    'life_time' => __( 'Life Time', 'membership_product' ),
+                    'full' => __( 'Full Time', 'membership_product' ),
+                    'life' => __( 'Life Time', 'membership_product' ),
                 ),
             )
         );
+        woocommerce_wp_text_input(
+            array(
+                'id' => 'description',
+                'label' => __( 'Description', 'membership_product' ),
+                'placeholder' => '',
+                'desc_tip' => 'true',
+                'description' => __( 'Enter Description.', 'membership_product' ),
+
+            )
+        );
+
+        woocommerce_wp_text_input(
+            array(
+                'id' => 'trial_period',
+                'label' => __( 'Trial Period', 'membership_product' ),
+                'placeholder' => '',
+                'desc_tip' => 'true',
+                'description' => __( 'Enter Trial Period.', 'membership_product' ),
+
+            )
+        );
+        woocommerce_wp_select(
+            array(
+                'id' => 'trial_interval',
+                'label' => __( 'Trial Interval', 'membership_product' ),
+                'placeholder' => '',
+                'desc_tip' => 'true',
+                'description' => __( 'Select Trial Interval.', 'membership_product' ),
+                'options' => array(
+
+                    'hour' => __( 'hour', 'membership_product' ),
+                    'day' => __( 'day', 'membership_product' ),
+                    'week' => __( 'weekly', 'membership_product' ),
+                    'month' => __( 'monthly', 'membership_product' ),
+
+                ),
+            )
+        );
+
+        woocommerce_wp_text_input(
+            array(
+                'id' => 'invoice_period',
+                'label' => __( 'invoice period', 'membership_product' ),
+                'placeholder' => '',
+                'desc_tip' => 'true',
+                'description' => __( 'Enter invoice period.', 'membership_product' ),
+
+            )
+        );
+        woocommerce_wp_select(
+            array(
+                'id' => 'invoice_interval',
+                'label' => __( 'invoice interval', 'membership_product' ),
+                'placeholder' => '',
+                'desc_tip' => 'true',
+                'description' => __( 'Select Invoice Interval.', 'membership_product' ),
+                'options' => array(
+
+                    'hour' => __( 'hour', 'membership_product' ),
+                    'day' => __( 'day', 'membership_product' ),
+                    'week' => __( 'weekly', 'membership_product' ),
+                    'month' => __( 'monthly', 'membership_product' ),
+
+                ),
+            )
+        );
+        $feature_names = Feature::all();
+
+        ?>
+        <p class=" form-field features">
+            <label for="feature">Feature</label>
+            <span class="woocommerce-help-tip"></span>
+            <select style="" id="plan_feature" multiple ="multiple" name="plan_feature" class="select short">
+                <?php foreach($feature_names as $feature) {
+
+                    echo '<option value="'.$feature->id.'">'.$feature->slug.'</option>';
+
+                }?>
+            </select>
+            <button id="add-feature">Add</button>
+        </p>
+        <div id="input_fields"></div>
+       <?php
+
+
         ?></div>
         </div><?php
     }
@@ -182,6 +280,22 @@ class Woocommerce
         do_action( 'woocommerce_simple_add_to_cart' );
 
     }
+    function my_custom_product_type_loop_add_to_cart() {
+        global $product;
+
+        if ( 'product_subscription' == $product->get_type() ) {
+
+            echo '<a href="' . esc_url( $product->get_permalink() ) . '?add-to-cart=' . esc_attr( $product->get_id() ) . '" class="button add_to_cart_button ajax_add_to_cart">Add to cart</a>';
+
+        }
+    }
+    function remove_read_more_button() {
+        global $product;
+        if ( 'product_subscription' == $product->get_type() ) {
+            remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        }
+    }
+
     /**
 
     Callback function to update taxes in the cart after checkout using the WooCommerce Quaderno  plugin.
